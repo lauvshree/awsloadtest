@@ -1,1 +1,1 @@
-<?php $RDS_URL='127.0.0.1:3307'; $RDS_DB='s123456'; $RDS_user='root'; $RDS_pwd='pass1234!'; ?>
+<?php $RDS_URL='localhost'; $RDS_DB='e124476'; $RDS_user='root'; $RDS_pwd='pass1234!'; ?>

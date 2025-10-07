@@ -21,27 +21,39 @@
       	$db = $_POST['database'];
         $un = $_POST['username'];
         $pw = $_POST['password'];
+        $pt = $_POST['PORT'];
 
-        echo $ep.' '.$db.' '.$un.' '.$pw;
-        $mysql_command = "mysql -u $un -p$pw -h $ep $db < sql/addressbook.sql";
         try {
-          $mysqli = new mysqli($ep, $un, $pw, $db);
+          $mysqli = mysqli_init();
+
+          if (!$mysqli->real_connect($ep, $un, $pw, $db, $pt, null)) {
+            die("Connect failed: " . mysqli_connect_error());
+          }
+
+          $mysqli->query("CREATE DATABASE IF NOT EXISTS ".$db." CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+          $mysqli->query("USE ".$db);
+          $mysqli->select_db($db);
         } catch (mysqli_sql_exception $e) {
-          echo $e->getMessage();
+          die($e->getMessage());
         }
 
-        $sql = file_get_contents('./sql/addressbook.sql');
+        $sql = file_get_contents('sql/addressbook.sql');
         if ($sql === false) {
           die("Could not read SQL file.");
         }
-
-        if (!$mysqli->multi_query($sql)) {
+        try {
+          if (!$mysqli->multi_query($sql)) {
           die("First query failed: " . $mysqli->error);
+          }
+        } catch (mysqli_sql_exception $e) {
+          die($e->getMessage());
         }
+ 
 
         if ($mysqli->errno) {
             die("Error after executing script: " . $mysqli->error);
         }
+
 
             echo "<br /><p>Writing config out to rds.conf.php </p>";
 

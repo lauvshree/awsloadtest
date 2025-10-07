@@ -7,6 +7,13 @@
   </div>
 
   <div class="form-group">
+    <label for="port" class="col-sm-2 control-label">Port</label>
+    <div class="col-sm-10">
+      <input type="number" class="form-control" name="port" value="3306">
+    </div>
+  </div>
+
+  <div class="form-group">
     <label for="database" class="col-sm-2 control-label">Database</label>
     <div class="col-sm-10">
       <input type="text" class="form-control" name="database">
